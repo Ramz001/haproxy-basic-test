@@ -1,0 +1,16 @@
+services:
+  app1:
+    image: "ramz001/haproxy-test:latest"
+    container_name: app1
+    environment:
+      - APP_NAME=App-One
+    ports:
+      - "3020:3000"
+
+  app2:
+    image: "ramz001/haproxy-test:latest"
+    container_name: app2
+    environment:
+      - APP_NAME=App-Two
+    ports:
+      - "3030:3000"
