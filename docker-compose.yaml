@@ -20,10 +20,29 @@ services:
     container_name: haproxy
     ports:
       - "80:80"
-      - "443:443"   # map host 8080 to container 80
+      - "443:443" # map host 8080 to container 80
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
       - ./certs:/certs:ro
     depends_on:
       - app1
       - app2
+  haproxy-l4:
+    image: haproxy:2.8
+    container_name: haproxy-l4
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./haproxy-l4.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - pg
+
+  pg:
+    image: postgres:17
+    container_name: pg
+    environment:
+      POSTGRES_PASSWORD: mysecret
+      POSTGRES_USER: user
+      POSTGRES_DB: testdb
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
